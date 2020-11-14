@@ -1,13 +1,13 @@
-export default class Slider {
-  constructor(page, btns, selector) {
-    this.page = document.querySelector(page);
-    this.slides = this.page.children;
-    this.btns = document.querySelectorAll(btns);
-    this.slideIndex = 1;
-    this.$blockTime = document.querySelector(selector);
+import Slider from './slider';
+
+export default class MainSlider extends Slider {
+  constructor(btns) {
+    super(btns);
   }
 
   showSlides(n) {
+    this.$blockTime = document.querySelector('.hanson');
+
     if (n > this.slides.length) {
       this.slideIndex = 1;
     }
