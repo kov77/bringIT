@@ -8,26 +8,21 @@ export default class Differance {
     this.newCounter = 0;
   }
 
-  bindTriggers() {
-    this.oldOfficer.querySelector('.plus').addEventListener('click', () => {
-      if (this.oldCounter !== this.oldItems.length - 2) {
-        this.oldItems[this.oldCounter].style.display = 'flex';
-        this.oldCounter++;
+  bindTriggers(officer, counter, items) {
+    officer.querySelector('.plus').addEventListener('click', () => {
+      if (counter !== items.length - 2) {
+        items[counter].style.display = 'flex';
+        items[counter].classList.add('animated', 'fadeIn');
+
+        counter++;
       } else {
-        this.oldItems[this.oldCounter].style.display = 'flex';
-        this.oldItems[this.oldItems.length - 1].remove();
-      }
-    });
-  }
-
-  hideItems() {
-    this.oldItems.forEach((item, i, arr) => {
-      if (i !== arr.length - 1) {
-        item.style.display = 'none';
+        items[counter].style.display = 'flex';
+        items[counter].classList.add('animated', 'fadeIn');
+        items[items.length - 1].remove();
       }
     });
 
-    this.newItems.forEach((item, i, arr) => {
+    items.forEach((item, i, arr) => {
       if (i !== arr.length - 1) {
         item.style.display = 'none';
       }
@@ -35,7 +30,7 @@ export default class Differance {
   }
 
   init() {
-    this.hideItems();
-    this.bindTriggers();
+    this.bindTriggers(this.oldOfficer, this.oldCounter, this.oldItems);
+    this.bindTriggers(this.newOfficer, this.newCounter, this.newItems);
   }
 }
