@@ -12,6 +12,9 @@ export default class MiniSlider extends Slider {
         slide.querySelector('.card__title').style.opacity = '0.4';
         slide.querySelector('.card__controls-arrow').style.opacity = '0';
       }
+      if (slide.nodeType === 'BUTTON') {
+        console.log('but');
+      }
     });
 
     this.slides[0].classList.add(this.activeClass);
@@ -21,22 +24,8 @@ export default class MiniSlider extends Slider {
     }
   }
 
-  // bindTriggers() {
-  //   this.next.addEventListener('click', () => {
-  //     this.container.appendChild(this.slides[0]);
-  //     this.decorizeSlides();
-  //   });
-  //   this.prev.addEventListener('click', () => {
-  //     let active = this.slides[this.slides.length - 1];
-  //     this.container.insertBefore(active, this.slides[0]);
-  //     this.decorizeSlides();
-  //   });
-  // }
-
   nextSlide() {
     this.container.appendChild(this.slides[0]);
-    this.container.appendChild(this.next);
-    this.container.appendChild(this.prev);
     this.decorizeSlides();
   }
 
@@ -45,9 +34,10 @@ export default class MiniSlider extends Slider {
       this.nextSlide();
     });
     this.prev.addEventListener('click', () => {
-      let active = this.slides[this.slides.length - 3];
+      let active = this.slides[this.slides.length - 1]; // last slide
       this.container.insertBefore(active, this.slides[0]);
       this.decorizeSlides();
+      //перемещаем последний слайд на верх и он становится перед первым
     });
   }
 
@@ -62,7 +52,7 @@ export default class MiniSlider extends Slider {
     this.decorizeSlides();
 
     if (this.autoplay) {
-      setInterval(() => this.nextSlide(), 5000);
+      setInterval(() => this.nextSlide(), 3000);
     }
   }
 }

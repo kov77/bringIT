@@ -2763,6 +2763,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slider_slider_main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider/slider-main */ "./src/js/modules/slider/slider-main.js");
 /* harmony import */ var _modules_slider_slider_mini__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/slider/slider-mini */ "./src/js/modules/slider/slider-mini.js");
 /* harmony import */ var _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/playVideo */ "./src/js/modules/playVideo.js");
+/* harmony import */ var _modules_differance__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/differance */ "./src/js/modules/differance.js");
+
 
 
 
@@ -2798,7 +2800,87 @@ window.addEventListener('DOMContentLoaded', function () {
   feedSlider.init();
   var player = new _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__["default"]('.showup .play', '.overlay');
   player.init();
+  new _modules_differance__WEBPACK_IMPORTED_MODULE_3__["default"]('.officerold', '.officernew', '.officer__card-item').init();
 });
+
+/***/ }),
+
+/***/ "./src/js/modules/differance.js":
+/*!**************************************!*\
+  !*** ./src/js/modules/differance.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Differance; });
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Differance =
+/*#__PURE__*/
+function () {
+  function Differance(oldOfficer, newOfficer, items) {
+    _classCallCheck(this, Differance);
+
+    this.oldOfficer = document.querySelector(oldOfficer);
+    this.newOfficer = document.querySelector(newOfficer);
+    this.oldItems = this.oldOfficer.querySelectorAll(items);
+    this.newItems = this.newOfficer.querySelectorAll(items);
+    this.oldCounter = 0;
+    this.newCounter = 0;
+  }
+
+  _createClass(Differance, [{
+    key: "bindTriggers",
+    value: function bindTriggers() {
+      var _this = this;
+
+      this.oldOfficer.querySelector('.plus').addEventListener('click', function () {
+        if (_this.oldCounter !== _this.oldItems.length - 2) {
+          _this.oldItems[_this.oldCounter].style.display = 'flex';
+          _this.oldCounter++;
+        } else {
+          _this.oldItems[_this.oldCounter].style.display = 'flex';
+
+          _this.oldItems[_this.oldItems.length - 1].remove();
+        }
+      });
+    }
+  }, {
+    key: "hideItems",
+    value: function hideItems() {
+      this.oldItems.forEach(function (item, i, arr) {
+        if (i !== arr.length - 1) {
+          item.style.display = 'none';
+        }
+      });
+      this.newItems.forEach(function (item, i, arr) {
+        if (i !== arr.length - 1) {
+          item.style.display = 'none';
+        }
+      });
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      this.hideItems();
+      this.bindTriggers();
+    }
+  }]);
+
+  return Differance;
+}();
+
+
 
 /***/ }),
 
@@ -3111,6 +3193,10 @@ function (_Slider) {
           slide.querySelector('.card__title').style.opacity = '0.4';
           slide.querySelector('.card__controls-arrow').style.opacity = '0';
         }
+
+        if (slide.nodeType === 'BUTTON') {
+          console.log('but');
+        }
       });
       this.slides[0].classList.add(this.activeClass);
 
@@ -3118,24 +3204,11 @@ function (_Slider) {
         this.slides[0].querySelector('.card__title').style.opacity = '1';
         this.slides[0].querySelector('.card__controls-arrow').style.opacity = '1';
       }
-    } // bindTriggers() {
-    //   this.next.addEventListener('click', () => {
-    //     this.container.appendChild(this.slides[0]);
-    //     this.decorizeSlides();
-    //   });
-    //   this.prev.addEventListener('click', () => {
-    //     let active = this.slides[this.slides.length - 1];
-    //     this.container.insertBefore(active, this.slides[0]);
-    //     this.decorizeSlides();
-    //   });
-    // }
-
+    }
   }, {
     key: "nextSlide",
     value: function nextSlide() {
       this.container.appendChild(this.slides[0]);
-      this.container.appendChild(this.next);
-      this.container.appendChild(this.prev);
       this.decorizeSlides();
     }
   }, {
@@ -3147,11 +3220,12 @@ function (_Slider) {
         _this2.nextSlide();
       });
       this.prev.addEventListener('click', function () {
-        var active = _this2.slides[_this2.slides.length - 3];
+        var active = _this2.slides[_this2.slides.length - 1]; // last slide
 
         _this2.container.insertBefore(active, _this2.slides[0]);
 
-        _this2.decorizeSlides();
+        _this2.decorizeSlides(); //перемещаем последний слайд на верх и он становится перед первым
+
       });
     }
   }, {
@@ -3166,7 +3240,7 @@ function (_Slider) {
       if (this.autoplay) {
         setInterval(function () {
           return _this3.nextSlide();
-        }, 5000);
+        }, 3000);
       }
     }
   }]);
