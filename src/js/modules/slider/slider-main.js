@@ -1,8 +1,8 @@
 import Slider from './slider';
 
 export default class MainSlider extends Slider {
-  constructor(btns) {
-    super(btns);
+  constructor(btnNext, btnPrev) {
+    super(btnNext, btnPrev);
   }
 
   showSlides(n) {
@@ -40,21 +40,23 @@ export default class MainSlider extends Slider {
     this.showSlides((this.slideIndex += n));
   }
 
+  btnTrigger(btn, n) {
+    btn.forEach((item) => {
+      item.addEventListener('click', () => {
+        this.plusSlides(n);
+      });
+
+      item.parentNode.previousElementSibling.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.showSlides((this.slideIndex = 1));
+      });
+    });
+  }
+
   render() {
     if (this.container) {
-      this.btns.forEach((item) => {
-        item.addEventListener('click', () => {
-          this.plusSlides(1);
-        });
-
-        item.parentNode.previousElementSibling.addEventListener(
-          'click',
-          (e) => {
-            e.preventDefault();
-            this.showSlides((this.slideIndex = 1));
-          }
-        );
-      });
+      this.btnTrigger(this.btnNext, 1);
+      this.btnTrigger(this.btnPrev, -1);
 
       this.showSlides(this.slideIndex);
     }
